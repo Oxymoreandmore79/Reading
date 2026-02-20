@@ -288,10 +288,8 @@ When it was night, the moon was bright. He saw the light and felt just right. He
             }
 
             // SWITCHED TO STABLE 'v1' ENDPOINT to fix the 'v1beta' mismatch error
-            const model = 'gemini-1.5-flash';
-            const url = `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`;
-            
-            const payload = {
+            const model = 'gemini-2.5-flash';
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
                 contents: [{
                     parts: [
                         { text: `You are a helpful reading tutor. The user is saying a word. Did they say "${targetWord}"? Return JSON only: {"match": true/false, "heard": "the word you heard"}` },
@@ -607,4 +605,5 @@ When it was night, the moon was bright. He saw the light and felt just right. He
     </script>
 </body>
 </html>
+
 
