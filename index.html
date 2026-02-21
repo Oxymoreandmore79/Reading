@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,29 +9,135 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;800&display=swap');
-        body { font-family: 'Lexend', sans-serif; background-color: #f8fafc; color: #334155; }
-        .story-word { display: inline-block; cursor: pointer; padding: 2px 4px; margin: 0 1px; border-radius: 6px; transition: all 0.2s; border-bottom: 2px solid transparent; }
-        .story-word:hover { background-color: #f1f5f9; transform: scale(1.05); }
-        .speaking { background-color: #fef08a !important; color: #854d0e !important; transform: scale(1.15) !important; border-bottom: 2px solid #eab308; z-index: 10; }
-        .practice-card { min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; animation: fadeIn 0.3s ease-out; }
-        .listening-pulse { outline: 6px solid #6366f1; animation: pulse-border 1.5s infinite; }
-        @keyframes pulse-border {
-            0% { outline-offset: 0px; box-shadow: 0 0 0 0px rgba(99, 102, 241, 0.4); }
-            50% { outline-offset: 10px; box-shadow: 0 0 0 20px rgba(99, 102, 241, 0); }
-            100% { outline-offset: 0px; box-shadow: 0 0 0 0px rgba(99, 102, 241, 0); }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .story-card { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); }
-        .speed-btn { padding: 8px 20px; border-radius: 9999px; font-size: 0.875rem; font-weight: 700; transition: all 0.2s; }
-        .speed-btn-active { background-color: #4f46e5; color: white; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); transform: scale(1.05); }
-        .speed-btn-inactive { background-color: transparent; color: #64748b; }
-        .speed-btn-inactive:hover { background-color: #f1f5f9; color: #334155; }
-        .cue-card { cursor: pointer; transition: all 0.2s; }
-        .cue-card:hover { transform: translateX(5px); background-color: #fff; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-        .processing-pulse { animation: processing-fade 1s infinite alternate; }
-        @keyframes processing-fade { from { opacity: 0.5; } to { opacity: 1; } }
+
+        .story-word {
+            display: inline-block;
+            cursor: pointer;
+            padding: 2px 4px;
+            margin: 0 1px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .story-word:hover {
+            background-color: #f1f5f9;
+            transform: scale(1.05);
+        }
+
+        .speaking {
+            background-color: #fef08a !important;
+            color: #854d0e !important;
+            transform: scale(1.15) !important;
+            border-bottom: 2px solid #eab308;
+            z-index: 10;
+        }
+
+        .practice-card {
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .listening-pulse {
+            outline: 6px solid #6366f1;
+            animation: pulse-border 1.5s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% {
+                outline-offset: 0px;
+                box-shadow: 0 0 0 0px rgba(99, 102, 241, 0.4);
+            }
+
+            50% {
+                outline-offset: 10px;
+                box-shadow: 0 0 0 20px rgba(99, 102, 241, 0);
+            }
+
+            100% {
+                outline-offset: 0px;
+                box-shadow: 0 0 0 0px rgba(99, 102, 241, 0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .story-card {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .speed-btn {
+            padding: 8px 20px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .speed-btn-active {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transform: scale(1.05);
+        }
+
+        .speed-btn-inactive {
+            background-color: transparent;
+            color: #64748b;
+        }
+
+        .speed-btn-inactive:hover {
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+
+        .cue-card {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cue-card:hover {
+            transform: translateX(5px);
+            background-color: #fff;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .processing-pulse {
+            animation: processing-fade 1s infinite alternate;
+        }
+
+        @keyframes processing-fade {
+            from {
+                opacity: 0.5;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
+
 <body class="min-h-screen py-12 px-4">
 
     <div class="max-w-6xl mx-auto">
@@ -100,7 +207,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="bg-indigo-50 p-6 rounded-2xl border border-indigo-100">
                 <h3 class="font-bold text-indigo-900 mb-2"><i class="fas fa-microphone mr-2"></i> Smart Voice AI</h3>
@@ -120,13 +227,43 @@
     <script>
         const storyText = `Once upon a time, a boy named Jack had a knack for a snack. He went to the blue lake to bake a giant cake. He brought a rake to keep the grass neat. Suddenly, he saw a small snake near the wall. "Do not stall!" called a bird from the hall. Jack felt a bit of pain from the rain on the train. He had to wait at the big gate because he was late for his mate. He sat on a seat to eat some meat and wheat. It was a neat treat! When it was night, the moon was bright. He saw the light and felt just right. He began to sing like a king with a wing. What a fun day to play and stay!`;
 
-        const familyRules = [
-            { suffix: 'ack', example: 'Snack', color: '#e11d48' }, { suffix: 'ake', example: 'Cake', color: '#7c3aed' },
-            { suffix: 'all', example: 'Wall', color: '#059669' }, { suffix: 'ain', example: 'Rain', color: '#ea580c' },
-            { suffix: 'ate', example: 'Late', color: '#db2777' }, { suffix: 'eat', example: 'Meat', color: '#2563eb' },
-            { suffix: 'ight', example: 'Bright', color: '#d97706' }, { suffix: 'ing', example: 'Sing', color: '#4f46e5' },
-            { suffix: 'ay', example: 'Play', color: '#0891b2' }
-        ];
+        const familyRules = [{
+            suffix: 'ack',
+            example: 'Snack',
+            color: '#e11d48'
+        }, {
+            suffix: 'ake',
+            example: 'Cake',
+            color: '#7c3aed'
+        }, {
+            suffix: 'all',
+            example: 'Wall',
+            color: '#059669'
+        }, {
+            suffix: 'ain',
+            example: 'Rain',
+            color: '#ea580c'
+        }, {
+            suffix: 'ate',
+            example: 'Late',
+            color: '#db2777'
+        }, {
+            suffix: 'eat',
+            example: 'Meat',
+            color: '#2563eb'
+        }, {
+            suffix: 'ight',
+            example: 'Bright',
+            color: '#d97706'
+        }, {
+            suffix: 'ing',
+            example: 'Sing',
+            color: '#4f46e5'
+        }, {
+            suffix: 'ay',
+            example: 'Play',
+            color: '#0891b2'
+        }];
 
         const synth = window.speechSynthesis;
         let mediaRecorder = null;
@@ -134,54 +271,71 @@
         let isProcessing = false;
         let currentSpeed = 1.0;
         let isReadingFull = false;
-        let currentAppMode = 'learning'; 
-        let familyWordsData = []; 
+        let currentAppMode = 'learning';
+        let familyWordsData = [];
         let practiceIndex = 0;
 
         const storyContainer = document.getElementById('story-container');
         const practiceContainer = document.getElementById('practice-container');
         const cueContainer = document.getElementById('cue-container');
 
-        function initApp() { initStoryAndData(); initCues(); }
+        function initApp() {
+            initStoryAndData();
+            initCues();
+        }
 
         async function fetchGeminiTranscription(base64Audio, targetWord, audioMimeType) {
-    const workerUrl = "https://reading-gemini-proxy.patriciasiqueirarxai70.workers.dev";
-    try {
-        const response = await fetch(workerUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ base64Audio, targetWord, audioMimeType })
-        });
-        
-        const rawText = await response.text();
-        // Clean any markdown backticks the AI might have added
-        const cleanedText = rawText.replace(/```json|```/g, "").trim();
-        return JSON.parse(cleanedText);
-    } catch (err) {
-        return { error: "Communication failed" };
-    }
-}
+            const workerUrl = "https://reading-gemini-proxy.patriciasiqueirarxai70.workers.dev";
+            try {
+                const response = await fetch(workerUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        base64Audio,
+                        targetWord,
+                        audioMimeType
+                    })
+                });
+
+                const rawText = await response.text();
+                const cleanedText = rawText.replace(/```json|```/g, "").trim();
+                return JSON.parse(cleanedText);
+            } catch (err) {
+                return {
+                    error: "Communication failed"
+                };
+            }
         }
 
         async function startPracticeRecording() {
             if (isProcessing) return;
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: true
+                });
                 const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4';
-                mediaRecorder = new MediaRecorder(stream, { mimeType });
+                mediaRecorder = new MediaRecorder(stream, {
+                    mimeType
+                });
                 audioChunks = [];
                 const card = document.getElementById('practice-word-card');
                 const hint = document.getElementById('mic-hint');
                 const targetWord = familyWordsData[practiceIndex].clean;
 
-                mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) audioChunks.push(e.data); };
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) audioChunks.push(e.data);
+                };
                 mediaRecorder.onstop = async () => {
                     isProcessing = true;
-                    const audioBlob = new Blob(audioChunks, { type: mimeType });
+                    const audioBlob = new Blob(audioChunks, {
+                        type: mimeType
+                    });
                     const reader = new FileReader();
                     card.classList.add('processing-pulse');
                     hint.innerHTML = `<i class="fas fa-brain fa-spin text-4xl"></i><span class="font-bold">AI Checking...</span>`;
-                    
+
                     reader.onloadend = async () => {
                         const base64Audio = reader.result.split(',')[1];
                         const result = await fetchGeminiTranscription(base64Audio, targetWord, mimeType);
@@ -198,20 +352,27 @@
                     reader.readAsDataURL(audioBlob);
                 };
                 mediaRecorder.start();
-                setTimeout(() => { if (mediaRecorder.state === "recording") mediaRecorder.stop(); }, 3000);
-            } catch (err) { showFeedback("Mic error", "error"); }
+                setTimeout(() => {
+                    if (mediaRecorder.state === "recording") mediaRecorder.stop();
+                }, 3000);
+            } catch (err) {
+                showFeedback("Mic error", "error");
+            }
         }
 
         function initStoryAndData() {
             const sortedRules = [...familyRules].sort((a, b) => b.suffix.length - a.suffix.length);
             storyContainer.innerHTML = storyText.split('. ').map(p => {
                 const words = p.split(' ').map(word => {
-                    const cleanWord = word.replace(/[.,"]/g,"");
+                    const cleanWord = word.replace(/[.,"]/g, "");
                     let displayWord = word;
                     for (const rule of sortedRules) {
                         if (cleanWord.toLowerCase().endsWith(rule.suffix)) {
                             displayWord = word.replace(rule.suffix, `<span style="color:${rule.color};font-weight:800">${rule.suffix}</span>`);
-                            familyWordsData.push({ clean: cleanWord, display: displayWord });
+                            familyWordsData.push({
+                                clean: cleanWord,
+                                display: displayWord
+                            });
                             break;
                         }
                     }
@@ -227,7 +388,7 @@
             document.getElementById('btn-practice').classList.toggle('bg-white', mode === 'practice');
             storyContainer.style.display = mode === 'learning' ? 'block' : 'none';
             practiceContainer.style.display = mode === 'practice' ? 'flex' : 'none';
-            if(mode === 'practice') updatePracticeCard();
+            if (mode === 'practice') updatePracticeCard();
         }
 
         function updatePracticeCard() {
@@ -236,9 +397,24 @@
             document.getElementById('practice-progress').innerText = `Word ${practiceIndex + 1} of ${familyWordsData.length}`;
         }
 
-        function nextPracticeWord() { if (practiceIndex < familyWordsData.length - 1) { practiceIndex++; updatePracticeCard(); } }
-        function prevPracticeWord() { if (practiceIndex > 0) { practiceIndex--; updatePracticeCard(); } }
-        function repeatTargetWord() { speakWord(null, familyWordsData[practiceIndex].clean); }
+        function nextPracticeWord() {
+            if (practiceIndex < familyWordsData.length - 1) {
+                practiceIndex++;
+                updatePracticeCard();
+            }
+        }
+
+        function prevPracticeWord() {
+            if (practiceIndex > 0) {
+                practiceIndex--;
+                updatePracticeCard();
+            }
+        }
+
+        function repeatTargetWord() {
+            speakWord(null, familyWordsData[practiceIndex].clean);
+        }
+
         function showFeedback(text, type) {
             const toast = document.getElementById('feedback-toast');
             document.getElementById('feedback-text').innerText = text;
@@ -250,8 +426,8 @@
             cueContainer.innerHTML = familyRules.map(rule => `<div class="cue-card bg-white/50 p-3 rounded-xl border mb-2">${rule.example} (-${rule.suffix})</div>`).join('');
         }
 
-        function setSpeed(rate, el) { 
-            currentSpeed = rate; 
+        function setSpeed(rate, el) {
+            currentSpeed = rate;
             document.querySelectorAll('.speed-btn').forEach(b => b.classList.replace('speed-btn-active', 'speed-btn-inactive'));
             el.classList.replace('speed-btn-inactive', 'speed-btn-active');
         }
@@ -259,15 +435,20 @@
         function speakWord(el, word) {
             const u = new SpeechSynthesisUtterance(word);
             u.rate = currentSpeed;
-            if(el) u.onstart = () => el.classList.add('speaking');
-            if(el) u.onend = () => el.classList.remove('speaking');
+            if (el) u.onstart = () => el.classList.add('speaking');
+            if (el) u.onend = () => el.classList.remove('speaking');
             synth.speak(u);
         }
 
-        function readFullStory() { /* Basic implementation */ }
-        function stopSpeech() { synth.cancel(); }
+        function readFullStory() {
+            /* Basic implementation */
+        }
+
+        function stopSpeech() {
+            synth.cancel();
+        }
         window.onload = initApp;
     </script>
 </body>
-</html>
 
+</html>
