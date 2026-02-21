@@ -145,29 +145,22 @@
         function initApp() { initStoryAndData(); initCues(); }
 
         async function fetchGeminiTranscription(base64Audio, targetWord, audioMimeType) {
-            const workerUrl = "https://reading-gemini-proxy.patriciasiqueirarxai70.workers.dev";
-            try {
-                const response = await fetch(workerUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ base64Audio, targetWord, audioMimeType })
-                });
-                
-                const plainText = await response.text();
-                let data;
-                try {
-                    data = JSON.parse(plainText);
-                } catch (e) {
-                    // If AI returns raw JSON string, clean it
-                    const cleaned = plainText.replace(/```json|```/g, "").trim();
-                    data = JSON.parse(cleaned);
-                }
-
-                if (!response.ok) return { error: data?.error || `Worker error ${response.status}` };
-                return data;
-            } catch (err) {
-                return { error: `Connection failed: ${err.message}` };
-            }
+    const workerUrl = "https://reading-gemini-proxy.patriciasiqueirarxai70.workers.dev";
+    try {
+        const response = await fetch(workerUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ base64Audio, targetWord, audioMimeType })
+        });
+        
+        const rawText = await response.text();
+        // Clean any markdown backticks the AI might have added
+        const cleanedText = rawText.replace(/```json|```/g, "").trim();
+        return JSON.parse(cleanedText);
+    } catch (err) {
+        return { error: "Communication failed" };
+    }
+}
         }
 
         async function startPracticeRecording() {
@@ -277,3 +270,4 @@
     </script>
 </body>
 </html>
+
