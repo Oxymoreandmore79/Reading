@@ -54,32 +54,14 @@
         }
 
         @keyframes pulse-border {
-            0% {
-                outline-offset: 0px;
-                box-shadow: 0 0 0 0px rgba(99, 102, 241, 0.4);
-            }
-
-            50% {
-                outline-offset: 10px;
-                box-shadow: 0 0 0 20px rgba(99, 102, 241, 0);
-            }
-
-            100% {
-                outline-offset: 0px;
-                box-shadow: 0 0 0 0px rgba(99, 102, 241, 0);
-            }
+            0% { outline-offset: 0px; box-shadow: 0 0 0 0px rgba(99, 102, 241, 0.4); }
+            50% { outline-offset: 10px; box-shadow: 0 0 0 20px rgba(99, 102, 241, 0); }
+            100% { outline-offset: 0px; box-shadow: 0 0 0 0px rgba(99, 102, 241, 0); }
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .story-card {
@@ -127,13 +109,8 @@
         }
 
         @keyframes processing-fade {
-            from {
-                opacity: 0.5;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0.5; }
+            to { opacity: 1; }
         }
     </style>
 </head>
@@ -227,43 +204,17 @@
     <script>
         const storyText = `Once upon a time, a boy named Jack had a knack for a snack. He went to the blue lake to bake a giant cake. He brought a rake to keep the grass neat. Suddenly, he saw a small snake near the wall. "Do not stall!" called a bird from the hall. Jack felt a bit of pain from the rain on the train. He had to wait at the big gate because he was late for his mate. He sat on a seat to eat some meat and wheat. It was a neat treat! When it was night, the moon was bright. He saw the light and felt just right. He began to sing like a king with a wing. What a fun day to play and stay!`;
 
-        const familyRules = [{
-            suffix: 'ack',
-            example: 'Snack',
-            color: '#e11d48'
-        }, {
-            suffix: 'ake',
-            example: 'Cake',
-            color: '#7c3aed'
-        }, {
-            suffix: 'all',
-            example: 'Wall',
-            color: '#059669'
-        }, {
-            suffix: 'ain',
-            example: 'Rain',
-            color: '#ea580c'
-        }, {
-            suffix: 'ate',
-            example: 'Late',
-            color: '#db2777'
-        }, {
-            suffix: 'eat',
-            example: 'Meat',
-            color: '#2563eb'
-        }, {
-            suffix: 'ight',
-            example: 'Bright',
-            color: '#d97706'
-        }, {
-            suffix: 'ing',
-            example: 'Sing',
-            color: '#4f46e5'
-        }, {
-            suffix: 'ay',
-            example: 'Play',
-            color: '#0891b2'
-        }];
+        const familyRules = [
+            { suffix: 'ack', example: 'Snack', color: '#e11d48' },
+            { suffix: 'ake', example: 'Cake', color: '#7c3aed' },
+            { suffix: 'all', example: 'Wall', color: '#059669' },
+            { suffix: 'ain', example: 'Rain', color: '#ea580c' },
+            { suffix: 'ate', example: 'Late', color: '#db2777' },
+            { suffix: 'eat', example: 'Meat', color: '#2563eb' },
+            { suffix: 'ight', example: 'Bright', color: '#d97706' },
+            { suffix: 'ing', example: 'Sing', color: '#4f46e5' },
+            { suffix: 'ay', example: 'Play', color: '#0891b2' }
+        ];
 
         const synth = window.speechSynthesis;
         let mediaRecorder = null;
@@ -289,36 +240,24 @@
             try {
                 const response = await fetch(workerUrl, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        base64Audio,
-                        targetWord,
-                        audioMimeType
-                    })
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ base64Audio, targetWord, audioMimeType })
                 });
 
                 const rawText = await response.text();
                 const cleanedText = rawText.replace(/```json|```/g, "").trim();
                 return JSON.parse(cleanedText);
             } catch (err) {
-                return {
-                    error: "Communication failed"
-                };
+                return { error: "Communication failed" };
             }
         }
 
         async function startPracticeRecording() {
             if (isProcessing) return;
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    audio: true
-                });
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4';
-                mediaRecorder = new MediaRecorder(stream, {
-                    mimeType
-                });
+                mediaRecorder = new MediaRecorder(stream, { mimeType });
                 audioChunks = [];
                 const card = document.getElementById('practice-word-card');
                 const hint = document.getElementById('mic-hint');
@@ -329,9 +268,7 @@
                 };
                 mediaRecorder.onstop = async () => {
                     isProcessing = true;
-                    const audioBlob = new Blob(audioChunks, {
-                        type: mimeType
-                    });
+                    const audioBlob = new Blob(audioChunks, { type: mimeType });
                     const reader = new FileReader();
                     card.classList.add('processing-pulse');
                     hint.innerHTML = `<i class="fas fa-brain fa-spin text-4xl"></i><span class="font-bold">AI Checking...</span>`;
@@ -362,6 +299,7 @@
 
         function initStoryAndData() {
             const sortedRules = [...familyRules].sort((a, b) => b.suffix.length - a.suffix.length);
+            familyWordsData = [];
             storyContainer.innerHTML = storyText.split('. ').map(p => {
                 const words = p.split(' ').map(word => {
                     const cleanWord = word.replace(/[.,"]/g, "");
@@ -369,10 +307,7 @@
                     for (const rule of sortedRules) {
                         if (cleanWord.toLowerCase().endsWith(rule.suffix)) {
                             displayWord = word.replace(rule.suffix, `<span style="color:${rule.color};font-weight:800">${rule.suffix}</span>`);
-                            familyWordsData.push({
-                                clean: cleanWord,
-                                display: displayWord
-                            });
+                            familyWordsData.push({ clean: cleanWord, display: displayWord });
                             break;
                         }
                     }
@@ -384,23 +319,34 @@
 
         function setMode(mode) {
             currentAppMode = mode;
+            stopSpeech();
             document.getElementById('btn-learning').classList.toggle('bg-white', mode === 'learning');
             document.getElementById('btn-practice').classList.toggle('bg-white', mode === 'practice');
+            document.getElementById('btn-learning').classList.toggle('text-indigo-600', mode === 'learning');
+            document.getElementById('btn-practice').classList.toggle('text-indigo-600', mode === 'practice');
+            
             storyContainer.style.display = mode === 'learning' ? 'block' : 'none';
             practiceContainer.style.display = mode === 'practice' ? 'flex' : 'none';
+            document.getElementById('learning-controls').style.display = mode === 'learning' ? 'flex' : 'none';
+            
             if (mode === 'practice') updatePracticeCard();
         }
 
         function updatePracticeCard() {
+            if (familyWordsData.length === 0) return;
             const current = familyWordsData[practiceIndex];
             document.getElementById('target-word-display').innerHTML = current.display;
             document.getElementById('practice-progress').innerText = `Word ${practiceIndex + 1} of ${familyWordsData.length}`;
+            document.getElementById('practice-word-card').style.backgroundColor = '';
+            document.getElementById('mic-hint').innerHTML = `<i class="fas fa-microphone text-4xl"></i><span class="font-bold">Tap to Speak</span>`;
         }
 
         function nextPracticeWord() {
             if (practiceIndex < familyWordsData.length - 1) {
                 practiceIndex++;
                 updatePracticeCard();
+            } else {
+                showFeedback("Great job! You finished all words!", "success");
             }
         }
 
@@ -412,14 +358,17 @@
         }
 
         function repeatTargetWord() {
-            speakWord(null, familyWordsData[practiceIndex].clean);
+            if (familyWordsData.length > 0) {
+                speakWord(null, familyWordsData[practiceIndex].clean);
+            }
         }
 
         function showFeedback(text, type) {
             const toast = document.getElementById('feedback-toast');
             document.getElementById('feedback-text').innerText = text;
-            toast.style.opacity = '1';
-            setTimeout(() => toast.style.opacity = '0', 3000);
+            toast.classList.replace('opacity-0', 'opacity-100');
+            toast.style.backgroundColor = type === 'success' ? '#059669' : '#e11d48';
+            setTimeout(() => toast.classList.replace('opacity-100', 'opacity-0'), 3000);
         }
 
         function initCues() {
@@ -433,6 +382,7 @@
         }
 
         function speakWord(el, word) {
+            synth.cancel();
             const u = new SpeechSynthesisUtterance(word);
             u.rate = currentSpeed;
             if (el) u.onstart = () => el.classList.add('speaking');
@@ -441,12 +391,34 @@
         }
 
         function readFullStory() {
-            /* Basic implementation */
+            stopSpeech();
+            isReadingFull = true;
+            const words = Array.from(document.querySelectorAll('.story-word'));
+            let i = 0;
+
+            function speakNext() {
+                if (i < words.length && isReadingFull) {
+                    const wordEl = words[i];
+                    const utterance = new SpeechSynthesisUtterance(wordEl.innerText.replace(/[.,]/g, ""));
+                    utterance.rate = currentSpeed;
+                    utterance.onstart = () => wordEl.classList.add('speaking');
+                    utterance.onend = () => {
+                        wordEl.classList.remove('speaking');
+                        i++;
+                        speakNext();
+                    };
+                    synth.speak(utterance);
+                }
+            }
+            speakNext();
         }
 
         function stopSpeech() {
+            isReadingFull = false;
             synth.cancel();
+            document.querySelectorAll('.story-word').forEach(el => el.classList.remove('speaking'));
         }
+
         window.onload = initApp;
     </script>
 </body>
