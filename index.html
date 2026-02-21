@@ -152,7 +152,17 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ base64Audio, targetWord, audioMimeType })
                 });
-                const data = await response.json();
+                
+                const plainText = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(plainText);
+                } catch (e) {
+                    // If AI returns raw JSON string, clean it
+                    const cleaned = plainText.replace(/```json|```/g, "").trim();
+                    data = JSON.parse(cleaned);
+                }
+
                 if (!response.ok) return { error: data?.error || `Worker error ${response.status}` };
                 return data;
             } catch (err) {
@@ -203,7 +213,7 @@
             const sortedRules = [...familyRules].sort((a, b) => b.suffix.length - a.suffix.length);
             storyContainer.innerHTML = storyText.split('. ').map(p => {
                 const words = p.split(' ').map(word => {
-                    const cleanWord = word.replace(/[.,]/g,"");
+                    const cleanWord = word.replace(/[.,"]/g,"");
                     let displayWord = word;
                     for (const rule of sortedRules) {
                         if (cleanWord.toLowerCase().endsWith(rule.suffix)) {
@@ -261,7 +271,7 @@
             synth.speak(u);
         }
 
-        function readFullStory() { /* Basic implementation similar to speakWord */ }
+        function readFullStory() { /* Basic implementation */ }
         function stopSpeech() { synth.cancel(); }
         window.onload = initApp;
     </script>
