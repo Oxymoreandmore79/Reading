@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Families Learning Lab</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;800&display=swap');
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #f0f4f8;
+            color: #1a202c;
+            user-select: none;
+        }
+
+        .word-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .word-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+        }
+
+        .word-card:active {
+            transform: scale(0.95);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+
+        .speaking {
+            outline: 4px solid #4299e1;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div id="app" class="max-w-6xl mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="index.html" class="text-teal-600 hover:text-teal-800 font-bold flex items-center gap-2 transition group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition"></i> Back to Home
+            </a>
+        </div>
+
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-teal-700 mb-2 flex items-center justify-center gap-4">
+                <i class="fas fa-flask"></i> Word Lab
+            </h1>
+            <p class="text-gray-600 text-lg font-medium">Click a family to hear it and see more words!</p>
+        </header>
+
+        <div id="dashboard" class="dashboard-grid">
+            </div>
+
+        <div id="lesson-view" class="hidden">
+            <button onclick="showDashboard()" class="mb-6 flex items-center gap-2 text-teal-600 font-bold hover:text-teal-800 transition-colors bg-white px-4 py-2 rounded-full shadow-sm">
+                <i class="fas fa-arrow-left"></i> All Families
+            </button>
+            
+            <div id="lesson-content">
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const wordFamilies = [
+            { id: "Ack", color: "#e91e63", words: ["Attack", "Back", "Knack", "Lack", "Quack", "Rack", "Sack", "Snack", "Tack", "Whack"] },
+            { id: "Ain", color: "#fbc02d", words: ["Brain", "Chain", "Complain", "Explain", "Gain", "Pain", "Plain", "Strain", "Train", "Vain"] },
+            { id: "Ake", color: "#757575", words: ["Awake", "Bake", "Cake", "Lake", "Make", "Quake", "Rake", "Sake", "Snake", "Take"] },
+            { id: "Ale", color: "#ffa000", words: ["Ale", "Bale", "Dale", "Female", "Gale", "Male", "Pale", "Sale", "Tale", "Whale"] },
+            { id: "All", color: "#009688", words: ["Ball", "Call", "Fall", "Hall", "Mall", "Small", "Squall", "Stall", "Tall", "Wall"] },
+            { id: "Ame", color: "#ec407a", words: ["Blame", "Came", "Dame", "Fame", "Game", "Lame", "Name", "Same", "Shame", "Tame"] },
+            { id: "An", color: "#f44336", words: ["Ban", "Bran", "Can", "Fan", "Japan", "Pan", "Pecan", "Scan", "Tan", "Van"] },
+            { id: "Ank", color: "#ffb300", words: ["Bank", "Blank", "Crank", "Drank", "Flank", "Rank", "Shrank", "Spank", "Tank", "Thank"] },
+            { id: "Ap", color: "#fbc02d", words: ["Cap", "Clap", "Flap", "Lap", "Map", "Scrap", "Slap", "Tap", "Trop", "Wrap"] },
+            { id: "Ash", color: "#f44336", words: ["Cash", "Clash", "Crash", "Dash", "Hash", "Lash", "Mash", "Rash", "Splash", "Stash"] },
+            { id: "At", color: "#e91e63", words: ["At", "Brat", "Cat", "Chat", "Fat", "Mat", "Rat", "Slat", "That", "Vat"] },
+            { id: "Ate", color: "#00897b", words: ["Abate", "Ate", "Debate", "Fate", "Grate", "Late", "Mate", "Plate", "Skate", "State"] },
+            { id: "Aw", color: "#ffb300", words: ["Claw", "Draw", "Flaw", "Jaw", "Law", "Paw", "Raw", "Saw", "Straw", "Thaw"] },
+            { id: "Ay", color: "#8d6e63", words: ["Away", "Clay", "Day", "Display", "Gay", "Pray", "Ray", "Stay", "Today", "Tray"] },
+            { id: "Eat", color: "#f44336", words: ["Beat", "Bleat", "Cheat", "Cleat", "Heat", "Meat", "Neat", "Seat", "Treat", "Wheat"] },
+            { id: "Ell", color: "#e91e63", words: ["Bell", "Cell", "Dell", "Dwell", "Farewell", "Fell", "Hell", "Sell", "Tell", "Yell"] },
+            { id: "Est", color: "#ec407a", words: ["Best", "Chest", "Crest", "Jest", "Nest", "Pest", "Rest", "Test", "Unrest", "West"] },
+            { id: "Ice", color: "#00897b", words: ["Dice", "Ice", "Lice", "Mice", "Price", "Rice", "Spice", "Splice", "Twice", "Vice"] },
+            { id: "Ine", color: "#8d6e63", words: ["Brine", "Decline", "Define", "Dine", "Fine", "Mine", "Pine", "Shrine", "Whine", "Wine"] },
+            { id: "Ide", color: "#ffb300", words: ["Bride", "Decide", "Guide", "Hide", "Ride", "Side", "Slide", "Stride", "Tide", "Wide"] },
+            { id: "Ick", color: "#00897b", words: ["Brick", "Flick", "Kick", "Lick", "Nick", "Pick", "Sick", "Stick", "Thick", "Trick"] },
+            { id: "In", color: "#ec407a", words: ["Bin", "Chin", "Grin", "In", "Kin", "Shin", "Skin", "Twin", "Win", "Within"] },
+            { id: "Ight", color: "#f44336", words: ["Bright", "Delight", "Fight", "Flight", "Light", "Might", "Night", "Sight", "Tight", "Tonight"] },
+            { id: "Ill", color: "#ffb300", words: ["Bill", "Chill", "Dill", "Fill", "Kill", "Shrill", "Still", "Swill", "Thrill", "Will"] },
+            { id: "Ing", color: "#ffb300", words: ["Bring", "King", "Ping", "Ring", "Sing", "Spring", "Sting", "String", "Thing", "Wing"] },
+            { id: "Ink", color: "#fbc02d", words: ["Blink", "Drink", "Fink", "Link", "Mink", "Pink", "Rink", "Sink", "Stink", "Wink"] },
+            { id: "Ip", color: "#ec407a", words: ["Dip", "Grip", "Hip", "Lip", "Ship", "Sip", "Snip", "Strip", "Trip", "Whip"] },
+            { id: "It", color: "#00897b", words: ["Admit", "Bit", "Fit", "Flit", "Grit", "Knit", "Lit", "Pit", "Quit", "Split"] },
+            { id: "Ock", color: "#ffb300", words: ["Block", "Clock", "Dock", "Frock", "Lock", "Mock", "Rock", "Shock", "Sock", "Stock"] },
+            { id: "Oke", color: "#8d6e63", words: ["Awoke", "Bloke", "Choke", "Joke", "Poke", "Smoke", "Spoke", "Stroke", "Woke", "Yoke"] },
+            { id: "Op", color: "#f44336", words: ["Cop", "Drop", "Flop", "Hop", "Mop", "Plop", "Pop", "Shop", "Strop", "Top"] },
+            { id: "Ore", color: "#ec407a", words: ["Chore", "Core", "Fore", "Gore", "More", "Ore", "Sore", "Store", "Tore", "Wore"] }
+        ];
+
+        const dashboard = document.getElementById('dashboard');
+        const lessonView = document.getElementById('lesson-view');
+        const lessonContent = document.getElementById('lesson-content');
+        const synth = window.speechSynthesis;
+
+        function getHighlightedWord(word, familyId, color) {
+            const lowerWord = word.toLowerCase();
+            const lowerFamily = familyId.toLowerCase();
+            const familyIndex = lowerWord.lastIndexOf(lowerFamily);
+
+            if (familyIndex !== -1) {
+                const prefix = word.substring(0, familyIndex);
+                const suffix = word.substring(familyIndex);
+                return `<span>${prefix}<span style="color: ${color}">${suffix}</span></span>`;
+            }
+            return `<span>${word}</span>`;
+        }
+
+        function speak(text, element, slow = false) {
+            if (synth.speaking) synth.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = slow ? 0.6 : 0.9;
+            utterance.onstart = () => { if(element) element.classList.add('speaking'); };
+            utterance.onend = () => { if(element) element.classList.remove('speaking'); };
+            synth.speak(utterance);
+        }
+
+        function initDashboard() {
+            dashboard.innerHTML = '';
+            wordFamilies.forEach(family => {
+                const card = document.createElement('div');
+                card.className = "word-card rounded-2xl p-6 shadow-md text-white text-center flex flex-col items-center justify-center";
+                card.style.backgroundColor = family.color;
+                card.onclick = () => showLesson(family.id);
+                card.innerHTML = `
+                    <div class="flex items-center justify-center gap-2 mb-1">
+                        <span class="text-3xl font-black">${family.id}</span>
+                    </div>
+                    <span class="text-sm opacity-90">${family.words.length} Words</span>
+                `;
+                dashboard.appendChild(card);
+            });
+        }
+
+        function showLesson(familyId) {
+            const family = wordFamilies.find(f => f.id === familyId);
+            if (!family) return;
+            dashboard.classList.add('hidden');
+            lessonView.classList.remove('hidden');
+            lessonContent.innerHTML = `
+                <div class="bg-white rounded-3xl shadow-xl overflow-hidden border-t-8" style="border-color: ${family.color}">
+                    <div class="p-8 text-center" style="background-color: ${family.color}10">
+                        <div class="flex flex-col items-center gap-2 cursor-pointer group" onclick="speak('${family.id}', this, true)">
+                            <h2 class="text-6xl font-black group-hover:scale-105 transition-transform" style="color: ${family.color}">-${family.id}</h2>
+                            <span class="text-sm font-bold uppercase tracking-widest text-gray-400">Tap to hear sound</span>
+                        </div>
+                    </div>
+                    <div class="p-8 grid grid-cols-2 md:grid-cols-5 gap-4">
+                        ${family.words.map(word => `<button onclick="speak('${word}', this)" class="p-4 bg-gray-50 border-2 border-gray-100 rounded-xl text-xl font-bold text-gray-700 hover:shadow-md transition-all">${getHighlightedWord(word, family.id, family.color)}</button>`).join('')}
+                    </div>
+                </div>
+            `;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showDashboard() {
+            lessonView.classList.add('hidden');
+            dashboard.classList.remove('hidden');
+            if (synth.speaking) synth.cancel();
+        }
+
+        initDashboard();
+    </script>
+</body>
+</html>
