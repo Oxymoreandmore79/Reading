@@ -1,63 +1,415 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Word Adventure | Learn to Read</title>
+    <title>The Word Adventure | Game Time</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;900&display=swap');
-        body { font-family: 'Lexend', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;800&display=swap');
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .story-word {
+            display: inline-block;
+            cursor: pointer;
+            padding: 2px 4px;
+            margin: 0 1px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .story-word:hover {
+            background-color: #f1f5f9;
+            transform: scale(1.05);
+        }
+
+        .speaking {
+            background-color: #fef08a !important;
+            color: #854d0e !important;
+            transform: scale(1.15) !important;
+            border-bottom: 2px solid #eab308;
+            z-index: 10;
+        }
+
+        .practice-card {
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .listening-pulse {
+            outline: 6px solid #6366f1;
+            animation: pulse-border 1.5s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% { outline-offset: 0px; box-shadow: 0 0 0 0px rgba(99, 102, 241, 0.4); }
+            50% { outline-offset: 10px; box-shadow: 0 0 0 20px rgba(99, 102, 241, 0); }
+            100% { outline-offset: 0px; box-shadow: 0 0 0 0px rgba(99, 102, 241, 0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .story-card {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .speed-btn {
+            padding: 8px 20px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+
+        .speed-btn-active {
+            background-color: #4f46e5;
+            color: white;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            transform: scale(1.05);
+        }
+
+        .speed-btn-inactive {
+            background-color: transparent;
+            color: #64748b;
+        }
+
+        .speed-btn-inactive:hover {
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+
+        .cue-card {
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cue-card:hover {
+            transform: translateX(5px);
+            background-color: #fff;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        .processing-pulse {
+            animation: processing-fade 1s infinite alternate;
+        }
+
+        @keyframes processing-fade {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen">
 
-    <nav class="p-6 max-w-7xl mx-auto flex justify-between items-center">
-        <div class="flex items-center gap-2 text-indigo-600 font-black text-2xl">
-            <i class="fas fa-magic"></i> WordAdventure
+<body class="min-h-screen py-12 px-4">
+
+    <div class="max-w-6xl mx-auto">
+        <div class="max-w-6xl mx-auto mb-8">
+            <a href="index.html" class="text-indigo-600 hover:text-indigo-800 font-bold flex items-center gap-2 transition group">
+                <i class="fas fa-arrow-left group-hover:-translate-x-1 transition"></i> Back to Home
+            </a>
         </div>
-        <a href="adventure.html" class="bg-indigo-100 text-indigo-600 px-6 py-2 rounded-full font-bold hover:bg-indigo-200 transition">
-            Start Playing
-        </a>
-    </nav>
 
-    <header class="max-w-7xl mx-auto px-6 py-12 md:py-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-        <div>
-            <span class="bg-indigo-100 text-indigo-600 px-4 py-1 rounded-full text-sm font-bold uppercase tracking-widest">Ages 5-8</span>
-            <h1 class="text-6xl md:text-7xl font-black text-slate-900 mt-4 mb-6 leading-tight">
-                Unlock the Power of <span class="text-indigo-600">Reading.</span>
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-extrabold text-indigo-700 mb-4">
+                <i class="fas fa-magic mr-2 text-yellow-500"></i> The Word Adventure
             </h1>
-            <p class="text-xl text-slate-600 mb-10 leading-relaxed">
-                A magical interactive journey where kids talk to the story. Master phonics with our smart AI reading buddy.
-            </p>
-            
-            <div class="flex flex-wrap gap-4">
-                <a href="adventure.html" class="px-10 py-5 bg-indigo-600 text-white rounded-2xl text-2xl font-black shadow-xl hover:bg-indigo-700 transition transform hover:-translate-y-1 text-center">
-                    Play Now — It's Free!
-                </a>
-            </div>
-        </div>
+            <p id="mode-instruction" class="text-xl text-slate-500 font-medium">Click any word to hear it spoken!</p>
+        </header>
 
-        <div class="relative">
-            <div class="relative bg-white p-8 rounded-3xl shadow-2xl border-8 border-indigo-50">
-                <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80" alt="Child reading" class="rounded-xl mb-6">
-                <div class="flex items-center gap-4 bg-indigo-50 p-4 rounded-xl">
-                    <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white">
-                        <i class="fas fa-microphone"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold text-slate-800">"Jack had a knack..."</p>
-                        <p class="text-xs text-indigo-600 font-medium">AI is listening...</p>
-                    </div>
+        <div class="flex flex-col items-center gap-6 mb-8">
+            <div class="bg-slate-200 p-1 rounded-full flex gap-1 shadow-inner">
+                <button onclick="setMode('learning')" id="btn-learning" class="px-6 py-2 rounded-full font-bold transition-all bg-white shadow-sm text-indigo-600">
+                    <i class="fas fa-headphones mr-2"></i>Learning Mode
+                </button>
+                <button onclick="setMode('practice')" id="btn-practice" class="px-6 py-2 rounded-full font-bold transition-all text-slate-600 hover:text-indigo-600">
+                    <i class="fas fa-microphone mr-2"></i>Practice Mode
+                </button>
+            </div>
+
+            <div class="flex flex-wrap justify-center items-center gap-6" id="learning-controls">
+                <div class="flex gap-2">
+                    <button onclick="readFullStory()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-full font-bold transition-all shadow-lg active:scale-95">Read Full Story</button>
+                    <button onclick="stopSpeech()" class="bg-rose-500 hover:bg-rose-600 text-white px-6 py-3 rounded-full font-bold transition-all shadow-lg active:scale-95">Stop</button>
+                </div>
+                <div class="flex items-center gap-1 bg-white p-1.5 rounded-full border shadow-sm">
+                    <button onclick="setSpeed(0.5, this)" class="speed-btn speed-btn-inactive">Slow</button>
+                    <button onclick="setSpeed(1.0, this)" class="speed-btn speed-btn-active">Natural</button>
+                    <button onclick="setSpeed(2.5, this)" class="speed-btn speed-btn-inactive">Fast</button>
                 </div>
             </div>
         </div>
-    </header>
 
-    <footer class="py-12 text-center text-slate-400 text-sm">
-        &copy; 2026 Word Adventure Project. Built with Gemini AI.
-    </footer>
+        <div id="feedback-toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-8 py-4 rounded-full shadow-2xl transition-all opacity-0 pointer-events-none z-50 flex items-center gap-3">
+            <i id="feedback-icon" class="fas fa-info-circle text-2xl"></i>
+            <span id="feedback-text" class="text-lg font-bold"></span>
+        </div>
 
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="md:col-span-3">
+                <div id="story-container" class="story-card bg-white rounded-3xl p-8 md:p-12 text-2xl md:text-3xl leading-relaxed text-slate-800"></div>
+                <div id="practice-container" style="display: none;" class="story-card bg-white rounded-3xl p-8 md:p-12 flex flex-col items-center">
+                    <div class="text-center mb-8">
+                        <span id="practice-progress" class="text-sm font-bold text-indigo-400 uppercase tracking-widest">Word 1 of 10</span>
+                        <h2 class="text-2xl font-bold text-slate-400">Can you say...</h2>
+                    </div>
+                    <div id="practice-word-card" onclick="startPracticeRecording()" class="practice-card w-full max-w-md bg-slate-50 border-4 border-dashed border-slate-200 rounded-3xl cursor-pointer hover:border-indigo-300 transition-all group">
+                        <div id="target-word-display" class="text-7xl md:text-8xl font-black mb-6"></div>
+                        <div id="mic-hint" class="flex flex-col items-center gap-2 text-indigo-500">
+                            <i class="fas fa-microphone text-4xl"></i>
+                            <span class="font-bold">Tap to Speak</span>
+                        </div>
+                    </div>
+                    <div class="mt-10 flex gap-4">
+                        <button onclick="prevPracticeWord()" class="p-4 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fas fa-arrow-left"></i></button>
+                        <button onclick="repeatTargetWord()" class="px-8 py-3 rounded-full bg-indigo-100 text-indigo-600 font-bold hover:bg-indigo-200 transition flex items-center gap-2">
+                            <i class="fas fa-volume-up"></i> Listen Again
+                        </button>
+                        <button onclick="nextPracticeWord()" class="p-4 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="md:col-span-1">
+                <div class="md:sticky md:top-8 bg-slate-100 rounded-3xl p-6 border-2 border-slate-200">
+                    <h2 class="text-xl font-extrabold text-indigo-900 mb-4 flex items-center gap-2"><i class="fas fa-palette"></i> Family Rules</h2>
+                    <div class="space-y-3" id="cue-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const storyText = `Once upon a time, a boy named Jack had a knack for a snack. He went to the blue lake to bake a giant cake. He brought a rake to keep the grass neat. Suddenly, he saw a small snake near the wall. "Do not stall!" called a bird from the hall. Jack felt a bit of pain from the rain on the train. He had to wait at the big gate because he was late for his mate. He sat on a seat to eat some meat and wheat. It was a neat treat! When it was night, the moon was bright. He saw the light and felt just right. He began to sing like a king with a wing. What a fun day to play and stay!`;
+
+        const familyRules = [
+            { suffix: 'ack', example: 'Snack', color: '#e11d48' },
+            { suffix: 'ake', example: 'Cake', color: '#7c3aed' },
+            { suffix: 'all', example: 'Wall', color: '#059669' },
+            { suffix: 'ain', example: 'Rain', color: '#ea580c' },
+            { suffix: 'ate', example: 'Late', color: '#db2777' },
+            { suffix: 'eat', example: 'Meat', color: '#2563eb' },
+            { suffix: 'ight', example: 'Bright', color: '#d97706' },
+            { suffix: 'ing', example: 'Sing', color: '#4f46e5' },
+            { suffix: 'ay', example: 'Play', color: '#0891b2' }
+        ];
+
+        const synth = window.speechSynthesis;
+        let mediaRecorder = null;
+        let audioChunks = [];
+        let isProcessing = false;
+        let currentSpeed = 1.0;
+        let isReadingFull = false;
+        let familyWordsData = [];
+        let practiceIndex = 0;
+
+        const storyContainer = document.getElementById('story-container');
+        const practiceContainer = document.getElementById('practice-container');
+        const cueContainer = document.getElementById('cue-container');
+
+        function initApp() {
+            initStoryAndData();
+            initCues();
+        }
+
+        async function fetchGeminiTranscription(base64Audio, targetWord, audioMimeType) {
+            const workerUrl = "https://reading-gemini-proxy.patriciasiqueirarxai70.workers.dev";
+            try {
+                const response = await fetch(workerUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ base64Audio, targetWord, audioMimeType })
+                });
+
+                const rawText = await response.text();
+                const cleanedText = rawText.replace(/```json|```/g, "").trim();
+                return JSON.parse(cleanedText);
+            } catch (err) {
+                return { error: "Communication failed" };
+            }
+        }
+
+        async function startPracticeRecording() {
+            if (isProcessing) return;
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4';
+                mediaRecorder = new MediaRecorder(stream, { mimeType });
+                audioChunks = [];
+                const card = document.getElementById('practice-word-card');
+                const hint = document.getElementById('mic-hint');
+                const targetWord = familyWordsData[practiceIndex].clean;
+
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) audioChunks.push(e.data);
+                };
+                mediaRecorder.onstop = async () => {
+                    isProcessing = true;
+                    const audioBlob = new Blob(audioChunks, { type: mimeType });
+                    const reader = new FileReader();
+                    card.classList.add('processing-pulse');
+                    hint.innerHTML = `<i class="fas fa-brain fa-spin text-4xl"></i><span class="font-bold">AI Checking...</span>`;
+
+                    reader.onloadend = async () => {
+                        const base64Audio = reader.result.split(',')[1];
+                        const result = await fetchGeminiTranscription(base64Audio, targetWord, mimeType);
+                        card.classList.remove('processing-pulse');
+                        isProcessing = false;
+                        if (result?.match) {
+                            card.style.backgroundColor = '#f0fdf4';
+                            showFeedback(`Perfect! You said "${targetWord}"!`, "success");
+                            setTimeout(nextPracticeWord, 1500);
+                        } else {
+                            showFeedback(result?.heard || "Try again!", "error");
+                        }
+                    };
+                    reader.readAsDataURL(audioBlob);
+                };
+                mediaRecorder.start();
+                setTimeout(() => {
+                    if (mediaRecorder.state === "recording") mediaRecorder.stop();
+                }, 3000);
+            } catch (err) {
+                showFeedback("Mic error", "error");
+            }
+        }
+
+        function initStoryAndData() {
+            const sortedRules = [...familyRules].sort((a, b) => b.suffix.length - a.suffix.length);
+            familyWordsData = [];
+            storyContainer.innerHTML = storyText.split('. ').map(p => {
+                const words = p.split(' ').map(word => {
+                    const cleanWord = word.replace(/[.,"]/g, "");
+                    let displayWord = word;
+                    for (const rule of sortedRules) {
+                        if (cleanWord.toLowerCase().endsWith(rule.suffix)) {
+                            displayWord = word.replace(rule.suffix, `<span style="color:${rule.color};font-weight:800">${rule.suffix}</span>`);
+                            familyWordsData.push({ clean: cleanWord, display: displayWord });
+                            break;
+                        }
+                    }
+                    return `<span class="story-word" onclick="speakWord(this, '${cleanWord}')">${displayWord}</span>`;
+                }).join(' ');
+                return `<p class="mb-4">${words}.</p>`;
+            }).join('');
+        }
+
+        function setMode(mode) {
+            stopSpeech();
+            document.getElementById('btn-learning').classList.toggle('bg-white', mode === 'learning');
+            document.getElementById('btn-practice').classList.toggle('bg-white', mode === 'practice');
+            document.getElementById('btn-learning').classList.toggle('text-indigo-600', mode === 'learning');
+            document.getElementById('btn-practice').classList.toggle('text-indigo-600', mode === 'practice');
+            
+            storyContainer.style.display = mode === 'learning' ? 'block' : 'none';
+            practiceContainer.style.display = mode === 'practice' ? 'flex' : 'none';
+            document.getElementById('learning-controls').style.display = mode === 'learning' ? 'flex' : 'none';
+            
+            if (mode === 'practice') updatePracticeCard();
+        }
+
+        function updatePracticeCard() {
+            if (familyWordsData.length === 0) return;
+            const current = familyWordsData[practiceIndex];
+            document.getElementById('target-word-display').innerHTML = current.display;
+            document.getElementById('practice-progress').innerText = `Word ${practiceIndex + 1} of ${familyWordsData.length}`;
+            document.getElementById('practice-word-card').style.backgroundColor = '';
+            document.getElementById('mic-hint').innerHTML = `<i class="fas fa-microphone text-4xl"></i><span class="font-bold">Tap to Speak</span>`;
+        }
+
+        function nextPracticeWord() {
+            if (practiceIndex < familyWordsData.length - 1) {
+                practiceIndex++;
+                updatePracticeCard();
+            } else {
+                showFeedback("Great job! You finished all words!", "success");
+            }
+        }
+
+        function prevPracticeWord() {
+            if (practiceIndex > 0) {
+                practiceIndex--;
+                updatePracticeCard();
+            }
+        }
+
+        function repeatTargetWord() {
+            if (familyWordsData.length > 0) {
+                speakWord(null, familyWordsData[practiceIndex].clean);
+            }
+        }
+
+        function showFeedback(text, type) {
+            const toast = document.getElementById('feedback-toast');
+            document.getElementById('feedback-text').innerText = text;
+            toast.style.opacity = '1';
+            toast.style.backgroundColor = type === 'success' ? '#059669' : '#e11d48';
+            setTimeout(() => toast.style.opacity = '0', 3000);
+        }
+
+        function initCues() {
+            cueContainer.innerHTML = familyRules.map(rule => `<div class="cue-card bg-white/50 p-3 rounded-xl border mb-2" onclick="speakWord(this, '${rule.example}')">${rule.example} (-${rule.suffix})</div>`).join('');
+        }
+
+        function setSpeed(rate, el) {
+            currentSpeed = rate;
+            document.querySelectorAll('.speed-btn').forEach(b => b.classList.replace('speed-btn-active', 'speed-btn-inactive'));
+            el.classList.replace('speed-btn-inactive', 'speed-btn-active');
+        }
+
+        function speakWord(el, word) {
+            synth.cancel();
+            const u = new SpeechSynthesisUtterance(word);
+            u.rate = currentSpeed;
+            if (el) u.onstart = () => el.classList.add('speaking');
+            if (el) u.onend = () => el.classList.remove('speaking');
+            synth.speak(u);
+        }
+
+        function readFullStory() {
+            stopSpeech();
+            isReadingFull = true;
+            const words = Array.from(document.querySelectorAll('.story-word'));
+            let i = 0;
+
+            function speakNext() {
+                if (i < words.length && isReadingFull) {
+                    const wordEl = words[i];
+                    const utterance = new SpeechSynthesisUtterance(wordEl.innerText.replace(/[.,]/g, ""));
+                    utterance.rate = currentSpeed;
+                    utterance.onstart = () => wordEl.classList.add('speaking');
+                    utterance.onend = () => {
+                        wordEl.classList.remove('speaking');
+                        i++;
+                        speakNext();
+                    };
+                    synth.speak(utterance);
+                }
+            }
+            speakNext();
+        }
+
+        function stopSpeech() {
+            isReadingFull = false;
+            synth.cancel();
+            document.querySelectorAll('.story-word').forEach(el => el.classList.remove('speaking'));
+        }
+
+        window.onload = initApp;
+    </script>
 </body>
+
 </html>
